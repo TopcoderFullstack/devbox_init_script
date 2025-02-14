@@ -39,8 +39,21 @@ echo "正在推送到远程仓库..."
 git push
 
 if [ $? -eq 0 ]; then
+    # 获取仓库的远程 URL 并转换为 HTTPS 地址
+    remote_url=$(git config --get remote.origin.url)
+    https_url=$(echo $remote_url | sed 's/git@github.com:/https:\/\/github.com\//')
+    https_url=${https_url%.git}
+
     echo -e "\n\033[32m代码推送成功！\033[0m"
     echo -e "提交信息：$commit_message"
+    echo -e "仓库地址：$https_url"
+
+    # 尝试在浏览器中打开仓库
+    if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "$https_url" &
+    elif command -v open >/dev/null 2>&1; then
+        open "$https_url" &
+    fi
 else
     echo -e "\033[31m推送失败，请检查错误信息\033[0m"
     exit 1
