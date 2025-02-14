@@ -84,6 +84,14 @@ if [ $? -eq 0 ]; then
     elif command -v code >/dev/null 2>&1; then
         code $(pwd)
     fi
+
+    sleep 2
+    # 在浏览器中打开仓库页面
+    if command -v xdg-open >/dev/null 2>&1; then
+        xdg-open "https://github.com/$gh_username/$repo_name" &>/dev/null &
+    elif command -v open >/dev/null 2>&1; then
+        open "https://github.com/$gh_username/$repo_name" &>/dev/null &
+    fi
 else
     echo "仓库创建失败"
     exit 1
