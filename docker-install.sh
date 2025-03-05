@@ -40,13 +40,10 @@ sudo apt-get install -y \
 
 # 配置用户组
 sudo usermod -aG docker $USER
-# newgrp docker
+newgrp docker
 
 # 启动服务
 sudo systemctl enable docker.service
 sudo systemctl start docker.service
-
-# 添加延迟确保服务就绪
-sleep 3
 
 echo "Docker installed successfully. Version: $(docker --version)"

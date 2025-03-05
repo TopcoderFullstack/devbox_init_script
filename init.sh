@@ -14,6 +14,7 @@ bash install-command.sh
 # 添加安装参数解析
 INSTALL_DOCKER=false
 INSTALL_ZSH=false
+INSTALL_DOKPLOY=false
 
 for arg in "$@"; do
     case "$arg" in
@@ -23,18 +24,30 @@ for arg in "$@"; do
         "--install-zsh"|"-iz")
             INSTALL_ZSH=true
             ;;
+        "--install-dokploy"|"-ik")
+            INSTALL_DOKPLOY=true
+            ;;
+        "--all"|"-a")
+            INSTALL_DOCKER=true
+            INSTALL_ZSH=true
+            INSTALL_DOKPLOY=true
+            ;;
     esac
 done
 
-# 添加Docker安装逻辑（在包管理之后）
 if [ "$INSTALL_DOCKER" = true ]; then
-    bash docekr-install.sh
+    echo -e "\n\033[33m4. 安装Docker...\033[0m"
+    bash docker-install.sh  # 已修复拼写错误
 fi
 
-# 添加ZSH安装逻辑
 if [ "$INSTALL_ZSH" = true ]; then
-    echo -e "\n\033[33m4. 安装ZSH...\033[0m"
+    echo -e "\n\033[33m5. 安装ZSH...\033[0m"
     bash zsh-install.sh
+fi
+
+if [ "$INSTALL_DOKPLOY" = true ]; then
+    echo -e "\n\033[33m6. 安装Dokploy...\033[0m"
+    bash dokploy-install.sh
 fi
 
 echo -e "\n\033[32m所有配置已完成！\033[0m"
